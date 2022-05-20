@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /
+Disallow: /404.php
+
+Host: https://host.ru/
+Sitemap: https://host.ru/sitemap.xml

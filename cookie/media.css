@@ -1,0 +1,17 @@
+@media screen and (max-width: 766px) {
+    .cookie__wrapper {
+        flex-direction: column;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .cookie {
+        padding-left: 15px;
+        flex-direction: column;
+    }
+
+    .cookie__wrapper {
+        margin-bottom: 5px;
+    }
+}

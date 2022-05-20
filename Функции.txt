@@ -1,0 +1,182 @@
+function delNewsProc(form, modalName) {
+    $.ajax({
+        url:     "/control/pages/news/backend/delNewsProc.php",
+        type:     "POST",
+        dataType: "html",
+        data: $("#"+form).serialize(),
+        success: function(response) {
+            $('.'+modalName).css({'opacity':'0' , 'pointer-events':'none'});
+            vNews();
+        }
+    });
+}
+
+//показ из бэкенда html
+vCancel();
+function vCancel(){
+    $.ajax({
+        type: 'POST',
+        url: "/admin/modules/admin/backend/v_cancelItems.php",
+        data: {"id": $id},
+        response:'text',
+        cache: false,
+        success: function(data) {
+            $('#id__cancel_items').html(data);
+        }
+    })
+};
+
+// раскрытие вниз flex
+$(".item").slideDown({
+  start: function () {
+    $(this).css({
+      display: "flex"
+    })
+  }
+});
+
+// Закрыть по нажатию вне элементов
+$(document).mouseup(function (e){ // событие клика по веб-документу
+	var div = $(".menu__burger"); // тут указываем ID элемента
+	if (!div.is(e.target) // если клик был не по нашему блоку
+	    && div.has(e.target).length === 0) { // и не по его дочерним элементам
+		div.removeClass('menu__burger_active'); // скрываем его
+	}
+});
+
+// расширяет возможности jquery, добавляет toggleText
+  $.fn.extend({
+    toggleText: function(a, b){
+        return this.text(this.text() == b ? a : b);
+    }
+  });
+
+// Отложенная загрузка карты
+var YaMapsShown = false;
+
+if ($('#map').length > 0) {
+    mapLoad();
+}
+    
+function mapLoad(){
+    $(window).scroll(function() {
+    let offset = $('#map__empty').offset().top;
+    if (!YaMapsShown){
+        if($(window).scrollTop() + $(window).height() > offset - 600) {                 
+            showYaMaps();
+            YaMapsShown = true;           
+        }
+    } 
+    });
+    
+    function showYaMaps(){
+        var script   = document.createElement("script");
+        script.type  = "text/javascript";
+        script.src   = "https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ab985bb8a81b53ce5efcc677608114fb7c7a17d08c26ad7e0feeef07e6e9e65e2&amp;width=100%25&amp;height=267&amp;lang=ru_RU&amp;scroll=false";  
+        
+        document.getElementById("map__empty").appendChild(script);
+    };
+}
+
+
+// КОНЕЦ Отложенная загрузка карты
+
+//вывод данных из таблицы
+$result = mysqli_query($db, "SELECT * FROM master");  
+$row = mysqli_fetch_array($result);
+if (mysqli_num_rows($result) > 0)
+{
+    do
+    {
+    echo'
+
+    ';
+    }while($row = mysqli_fetch_array($result));
+}
+//добавление данных в таблицу
+mysqli_query ($db, "INSERT INTO clients (
+    status,
+    type
+    )
+    VALUES  (
+    '1',
+    '2'
+)");
+//обновление данных в таблице
+mysqli_query($db, "UPDATE clients SET 
+    opf = '$opf', 
+    title = '$title'
+    WHERE id = '$id'
+");
+//удаление строки из таблицы
+mysqli_query ($db, "DELETE FROM subcategory WHERE 
+    id = '{$key}'
+");
+
+//запрос, результаты должны быть в заданном порядке
+SELECT * FROM mytable WHERE id IN (1,2,3,4) ORDER BY FIELD(id,3,2,1,4);
+
+
+// обнуление POST
+header("Location:".$_SERVER['PHP_SELF']);
+
+//добавить пробелы после трех последних символов
+$str = $row['price'];
+$str = (substr_replace(trim(str_replace(' ','',strip_tags($str)))," ",-3,0));
+
+//формируем массив и обрабатываем значения массива через запятую
+$result_vac_cust = mysqli_query($db, "SELECT * FROM vacancy_response_customer WHERE id_user = '{$id}'");
+$row_vac_cust = mysqli_fetch_array($result_vac_cust);
+$arr_vac_cust = array();
+do
+{
+    array_push($arr_vac_cust, $row_vac_cust['id_vacancy']);
+}while($row_vac_cust = mysqli_fetch_array($result_vac_cust));
+
+$separated = implode(', ', $arr_vac_cust); //массив вакансий через запятую
+
+//от даты в переменной вычитаем 3 часа
+$new_date = date('Y-m-d H:i', strtotime("-3 hours", strtotime($row['deadLine'])));
+
+//удаление файла
+unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/doc/'.$row['file'].'');
+
+//перемещение файла
+$currentPath = $_SERVER['DOCUMENT_ROOT'].'/uploads/temp/'.$file; 
+$newPath = $_SERVER['DOCUMENT_ROOT'].'/uploads/doc/'.$file;
+rename($currentPath, $newPath);
+
+// выводим текущий месяц в родительском падеже
+function strftime_rus($format, $date = FALSE) {
+    if (!$date)
+        $timestamp = time();
+   
+    elseif (!is_numeric($date))
+        $timestamp = strtotime($date);
+   
+    else
+        $timestamp = $date;
+   
+    if (strpos($format, '%B2') === FALSE)
+        return strftime($format, $timestamp);
+   
+    $month_number = date('n', $timestamp);
+   
+    switch ($month_number) {
+        case 1: $rus = 'января'; break;
+        case 2: $rus = 'февраля'; break;
+        case 3: $rus = 'марта'; break;
+        case 4: $rus = 'апреля'; break;
+        case 5: $rus = 'мая'; break;
+        case 6: $rus = 'июня'; break;
+        case 7: $rus = 'июля'; break;
+        case 8: $rus = 'августа'; break;
+        case 9: $rus = 'сентября'; break;
+        case 10: $rus = 'октября'; break;
+        case 11: $rus = 'ноября'; break;
+        case 12: $rus = 'декабря'; break;
+    }
+   
+    $rusformat = str_replace('%B2', $rus, $format);
+    return strftime($rusformat, $timestamp);
+}
