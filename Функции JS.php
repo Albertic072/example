@@ -160,3 +160,7 @@ document.getElementById('inputNumber').oninput = function () {
 //еще вариант
 <input type="number" onkeypress="if(this.value.length&gt;3) return false;">
 
+//проверка инпут mail
+if(($('input[type=email]').match(/.+?\@.+/g) || []).length !== 1){
+    alert('Поле e-mail неверно заполнено');
+}
